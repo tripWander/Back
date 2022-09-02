@@ -1,16 +1,21 @@
 import express from 'express';
+import { toPairs } from 'ramda';
+import 'reflect-metadata';
+import { AppDataSource } from '@src/db';
+
+import routes from './routes';
 
 const app = express();
 
 const port = 8080;
 
-app.get('/', (req, res) => {
-  res.send('hello from Viktor');
+app.use(express.json());
+
+toPairs(routes).forEach(([routePath, handler]) => {
+  app.use(routePath, handler);
 });
 
-function greet(name: string) {
-  console.log(name);
-}
 app.listen(port, () => {
+  AppDataSource.initialize();
   console.log('server started', port);
 });
