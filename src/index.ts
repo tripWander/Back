@@ -1,7 +1,7 @@
 import express from 'express';
 import { toPairs } from 'ramda';
 import 'reflect-metadata';
-import { AppDataSource } from '@src/db';
+import { dataSource } from '@src/db';
 
 import routes from './routes';
 
@@ -16,6 +16,6 @@ toPairs(routes).forEach(([routePath, handler]) => {
 });
 
 app.listen(port, () => {
-  AppDataSource.initialize();
+  dataSource.initialize();
   console.log('server started', port);
 });
