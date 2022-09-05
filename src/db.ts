@@ -8,6 +8,5 @@ export const dataSource = new DataSource({
   synchronize: true,
   logging: false,
   entities: [User],
-  migrations: [],
   subscribers: [],
 });

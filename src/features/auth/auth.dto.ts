@@ -11,3 +11,7 @@ export class RegisterDTO {
     public age: number,
   ) {}
 }
+
+export class LoginResponseDTO {
+  constructor(public accessToken: string, public id: string) {}
+}

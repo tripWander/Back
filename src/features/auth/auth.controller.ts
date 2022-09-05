@@ -1,3 +1,4 @@
+import AuthService from '@src/features/auth/auth.service';
 import authService from '@src/features/auth/auth.service';
 import { loginSchema, registerSchema } from '@src/features/auth/auth.validations';
 import { Request, Response } from 'express';
@@ -5,16 +6,21 @@ import { LoginDTO, RegisterDTO } from './auth.dto';
 
 const login = async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body;
-  const { error, value } = loginSchema.validate({
+  const { error } = loginSchema.validate({
     email: email,
     password: password,
   });
   const loginData = new LoginDTO(email, password);
-  if (!error) {
-    res.send(`success ${loginData.email}  ${loginData.password}`);
-  } else {
-    res.status(403).send('Bad requests');
+  if (error) {
+    res.status(400).send('Bad requests');
+    return;
   }
+  const result = await AuthService.login(loginData);
+  if (result instanceof Error) {
+    res.status(400).send(result.message);
+    return;
+  }
+  res.send(result);
 };
 
 export const register = async (req: Request, res: Response): Promise<void> => {
@@ -26,13 +32,18 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     lastName: lastName,
     age: age,
   });
-  const registerData = new RegisterDTO(email, password, firstName, lastName, age);
-  if (!error) {
-    const result = await authService.register(registerData);
-    res.send(`user was ${result.email}  ${result.password}`);
-  } else {
-    res.status(403).send('Bad requests');
+
+  if (error) {
+    res.status(400).send('Bad requests');
+    return;
   }
+  const registerData = new RegisterDTO(email, password, firstName, lastName, age);
+  const result = await authService.register(registerData);
+  if (result instanceof Error) {
+    res.status(400).send(result.message);
+    return;
+  }
+  res.send(result);
 };
 
 export default { register, login };
