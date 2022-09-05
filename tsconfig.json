@@ -1,28 +1,36 @@
 {
   "compilerOptions": {
+    "lib": [
+      "es2018"
+    ],
+    "rootDirs": [
+      "src/features/__tests__",
+      "src"
+    ],
+    "target": "es2018",
     "module": "commonjs",
-    "esModuleInterop": true,
-    "target": "es6",
-    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "outDir": "./build",
+    "skipLibCheck": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "strictPropertyInitialization": false,
-    "moduleResolution": "node",
     "sourceMap": true,
-    "outDir": "dist",
-    "baseUrl": ".",
-    "strict": true,
-    "skipLibCheck": true,
-    "checkJs": true,
+    "esModuleInterop": true,
+    "baseUrl": "src",
     "paths": {
-      "@src/*": ["src/*"],
-      "*": ["node_modules/*"]
+      "@/*":["./*"]
     }
   },
   "ts-node": {
-    // Do not forget to `npm i -D tsconfig-paths`
-    "require": ["tsconfig-paths/register"]
+    "require": [
+      "tsconfig-paths/register"
+    ]
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "./coverage", "/dist", "__tests__", "jest.config.js"]
+  "include": [
+    "src",
+    ".env"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

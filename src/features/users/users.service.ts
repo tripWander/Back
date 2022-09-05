@@ -1,7 +1,7 @@
 import { omit } from 'ramda';
 
-import { PaginatedResponse } from '@src/types/generalResponses';
-import { PromiseResult } from '@src/types/genericTypes';
+import { PaginatedResponse } from '@/types/generalResponses';
+import { PromiseResult } from '@/types/genericTypes';
 import UsersDao from './users.dao';
 import { UserResponseT, UsersQuery } from './users.dto';
 

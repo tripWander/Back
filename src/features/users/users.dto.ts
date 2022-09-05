@@ -1,4 +1,4 @@
-import { User } from '@src/entity/User';
+import { User } from '@/entity/User';
 
 export class UsersQuery {
   age?: number;

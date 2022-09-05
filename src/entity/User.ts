@@ -1,4 +1,3 @@
-import dataSource from '@src/db';
 import {
   Entity,
   PrimaryGeneratedColumn,

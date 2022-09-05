@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 
+import { LoginDTO, RegisterDTO } from './auth.dto';
 import AuthService from './auth.service';
 import { loginSchema, registerSchema } from './auth.validations';
-import { LoginDTO, RegisterDTO } from './auth.dto';
 
 const login = async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body;

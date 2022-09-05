@@ -1,10 +1,10 @@
 import { Like } from 'typeorm';
 
-import dataSource from '@src/db';
-import { User } from '@src/entity/User';
-import { RegisterDTO } from '@src/features/auth/auth.dto';
-import { PaginatedResponse } from '@src/types/generalResponses';
-import { PromiseResult } from '@src/types/genericTypes';
+import dataSource from '@/db';
+import { User } from '@/entity/User';
+import { RegisterDTO } from '@/features/auth/auth.dto';
+import { PaginatedResponse } from '@/types/generalResponses';
+import { PromiseResult } from '@/types/genericTypes';
 import { UsersQuery } from './users.dto';
 
 const register = async (registerData: RegisterDTO): PromiseResult<Error, User> => {
