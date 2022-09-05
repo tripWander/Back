@@ -1,10 +1,11 @@
-import dataSource from '@src/db';
 import { Like } from 'typeorm';
+
+import dataSource from '@src/db';
 import { User } from '@src/entity/User';
 import { RegisterDTO } from '@src/features/auth/auth.dto';
-import { UsersQuery } from '@src/features/users/users.dto';
 import { PaginatedResponse } from '@src/types/generalResponses';
 import { PromiseResult } from '@src/types/genericTypes';
+import { UsersQuery } from './users.dto';
 
 const register = async (registerData: RegisterDTO): PromiseResult<Error, User> => {
   const userRepository = dataSource.getRepository(User);
@@ -12,7 +13,8 @@ const register = async (registerData: RegisterDTO): PromiseResult<Error, User> =
     const user = await userRepository.create(registerData);
     return userRepository.save(user);
   } catch (error) {
-    return error;
+    if (error instanceof Error) return error;
+    return new Error('Failed to register user');
   }
 };
 
@@ -27,25 +29,32 @@ const getUsers = async (usersQuery: UsersQuery): PromiseResult<Error, PaginatedR
     });
     return new PaginatedResponse<User>(total, result);
   } catch (error) {
-    return error;
+    if (error instanceof Error) return error;
+    return new Error('Failed to get users');
   }
 };
 
 const findUserById = async (userId: string): PromiseResult<Error, User> => {
   const userRepository = dataSource.getRepository(User);
   try {
-    return userRepository.findOneBy({ id: userId });
+    const user = await userRepository.findOneBy({ id: userId });
+    if (!user) return new Error('user was not found');
+    return user;
   } catch (error) {
-    return error;
+    if (error instanceof Error) return error;
+    return new Error('Failed to find user');
   }
 };
 
 const findUserByEmail = async (email: string): PromiseResult<Error, User> => {
   const userRepository = dataSource.getRepository(User);
   try {
-    return userRepository.findOneBy({ email });
+    const user = await userRepository.findOneBy({ email });
+    if (!user) return new Error('user was not found');
+    return user;
   } catch (error) {
-    return error;
+    if (error instanceof Error) return error;
+    return new Error('Failed to find user');
   }
 };
 
@@ -59,7 +68,8 @@ const deleteUser = async (userId: string): PromiseResult<Error, string> => {
     await userRepository.remove(user);
     return 'success';
   } catch (error) {
-    return error;
+    if (error instanceof Error) return error;
+    return new Error('user was not deleted');
   }
 };
 

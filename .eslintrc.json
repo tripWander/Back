@@ -12,7 +12,8 @@
   },
   "plugins": [
     "@typescript-eslint",
-    "functional"
+    "functional",
+    "jest"
   ],
   "extends": [
     "plugin:functional/external-recommended",

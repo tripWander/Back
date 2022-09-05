@@ -7,7 +7,7 @@ export const generateAccessToken = async (email: string, id: string) => {
       email,
       id,
     },
-    accessTokenSecret,
+    accessTokenSecret || 'secret',
     { expiresIn: accessTokenExpires },
   );
 };
