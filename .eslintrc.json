@@ -30,6 +30,7 @@
     "functional/functional-parameters": "off",
     "functional/no-try-statement": "off",
     "functional/no-return-void": "off",
+    "functional/no-this-expression": "off",
     // The following rule is enabled only to supplement the inline suppression
     // examples, and because it is not a recommended rule, you should either
     // disable it, or understand what it enforces.

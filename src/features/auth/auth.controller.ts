@@ -1,7 +1,7 @@
-import AuthService from '@src/features/auth/auth.service';
-import authService from '@src/features/auth/auth.service';
-import { loginSchema, registerSchema } from '@src/features/auth/auth.validations';
 import { Request, Response } from 'express';
+
+import AuthService from './auth.service';
+import { loginSchema, registerSchema } from './auth.validations';
 import { LoginDTO, RegisterDTO } from './auth.dto';
 
 const login = async (req: Request, res: Response): Promise<void> => {
@@ -38,7 +38,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     return;
   }
   const registerData = new RegisterDTO(email, password, firstName, lastName, age);
-  const result = await authService.register(registerData);
+  const result = await AuthService.register(registerData);
   if (result instanceof Error) {
     res.status(400).send(result.message);
     return;

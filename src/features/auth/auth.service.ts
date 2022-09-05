@@ -1,11 +1,14 @@
-import UserDao from '@src/features/users/user.dao';
-import { PromiseResult } from '@src/types/genericTypes';
-import { generateAccessToken } from '@src/utils/token';
+import { omit } from 'ramda';
 import { evolve } from 'fp-ts/struct';
 import { pipe } from 'fp-ts/function';
+
+import UserDao from '@src/features/users/users.dao';
+import { UserResponseT } from '@src/features/users/users.dto';
+import { PromiseResult } from '@src/types/genericTypes';
+import { generateAccessToken } from '@src/utils/token';
 import { User } from '@src/entity/User';
-import { LoginDTO, LoginResponseDTO, RegisterDTO } from '@src/features/auth/auth.dto';
 import { hashPassword, isPasswordValid } from '@src/utils/hashing';
+import { LoginDTO, LoginResponseDTO, RegisterDTO } from './auth.dto';
 
 const login = async (loginData: LoginDTO): PromiseResult<Error, LoginResponseDTO> => {
   const user = await UserDao.findUserByEmail(loginData.email);
@@ -20,10 +23,10 @@ const login = async (loginData: LoginDTO): PromiseResult<Error, LoginResponseDTO
   return new LoginResponseDTO(accessToken, user.id);
 };
 
-const register = async (registerData: RegisterDTO): PromiseResult<Error, User> => {
+const register = async (registerData: RegisterDTO): PromiseResult<Error, UserResponseT> => {
   const user = await UserDao.findUserByEmail(registerData.email);
   if (user instanceof User) {
-    return;
+    return new Error('User already exist');
   }
 
   const newRegister: RegisterDTO = pipe(
@@ -37,7 +40,11 @@ const register = async (registerData: RegisterDTO): PromiseResult<Error, User> =
     }),
   );
 
-  return await UserDao.register(newRegister);
+  const newUser = await UserDao.register(newRegister);
+  if (newUser instanceof Error) {
+    return newUser;
+  }
+  return omit(['password'], newUser);
 };
 
 export default {

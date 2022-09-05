@@ -1,8 +1,9 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
+
 import { User } from './entity/User';
 
-export const dataSource = new DataSource({
+const dataSource = new DataSource({
   type: 'sqlite',
   database: 'database.sqlite',
   synchronize: true,
@@ -10,3 +11,5 @@ export const dataSource = new DataSource({
   entities: [User],
   subscribers: [],
 });
+
+export default dataSource;

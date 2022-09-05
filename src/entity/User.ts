@@ -1,5 +1,11 @@
-import { dataSource } from '@src/db';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import dataSource from '@src/db';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -42,5 +48,3 @@ export class User {
   })
   updatedAt: Date;
 }
-
-export const userRepository = dataSource.getRepository(User);
