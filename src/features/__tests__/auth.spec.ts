@@ -1,3 +1,4 @@
+import { port } from "@/config/env";
 import request from 'supertest';
 
 import app from "@/app";
@@ -6,6 +7,8 @@ import { RegisterDTO } from "@/features/auth/auth.dto";
 
 describe('user can register and then login', () => {
   test('2 + 2', () => {
+    const portToTest = port
+    expect(portToTest).toBe("4000")
     expect(2 + 2).toBe(4);
   });
 

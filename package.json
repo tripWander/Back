@@ -8,7 +8,7 @@
       "clean": "rimraf coverage build tmp",
       "build": "tsc -p tsconfig.json",
       "prepare": "husky install",
-      "test": "jest --coverage"
+      "test": "dotenv -e .env.test jest --coverage "
    },
    "keywords": [],
    "author": "",
@@ -40,6 +40,7 @@
       "@types/supertest": "^2.0.12",
       "@typescript-eslint/eslint-plugin": "^5.36.1",
       "@typescript-eslint/parser": "^5.36.1",
+      "dotenv-cli": "^6.0.0",
       "eslint": "8.22.0",
       "eslint-config-airbnb": "^19.0.4",
       "eslint-config-airbnb-typescript": "^17.0.0",
