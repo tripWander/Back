@@ -9,15 +9,3 @@ export class UsersQuery {
 }
 
 export type UserResponseT = Partial<Omit<User, 'password'>>;
-
-// export class UserResponse implements UserResponseT {
-//   constructor(
-//     public createdAt: Date,
-//     public email: string,
-//     public firstName: string,
-//     public id: string,
-//     public lastName: string,
-//     public updatedAt: Date,
-//     public age?: number,
-//   ) {}
-// }

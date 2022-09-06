@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-import { accessTokenExpires, accessTokenSecret } from '@/config/config';
+import { accessTokenExpires, accessTokenSecret } from '@/config/env';
 
 export const generateAccessToken = async (email: string, id: string) => {
   return jwt.sign(
