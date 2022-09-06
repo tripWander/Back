@@ -1,19 +1,18 @@
-// Example
-import dataSource from "../db";
+import path from 'path'
+import dataSource from "@/db";
 import * as dotenv from 'dotenv'
 
 beforeAll(async () => {
-  dotenv.config();
+  dotenv.config({path: path.resolve(__dirname, "../../.env.test")});
   if (process.env.USE_TYPEORM==='true') {
-    const connection = await dataSource.initialize();
+    await dataSource.initialize();
   }
-
 });
 
 afterAll(async () => {
   dotenv.config();
   if (process.env.USE_TYPEORM==='true') {
-   await dataSource.close();
+   await dataSource.dropDatabase()
   }
 
 });

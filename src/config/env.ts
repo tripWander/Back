@@ -9,7 +9,13 @@ const envVarsSchema = joi.object()
       .required(),
     PORT: joi.number().positive().required(),
     ACCESS_TOKEN_SECRET: joi.string().required(),
-    ACCESS_TOKEN_EXPIRES: joi.number().positive().required()
+    ACCESS_TOKEN_EXPIRES: joi.number().positive().required(),
+    DB_NAME: joi.string().required(),
+    USE_TYPEORM: joi.string().when("NODE_ENV", {
+      is: joi.valid("test"),
+      then: joi.valid("true", 'false'),
+      otherwise: joi.valid(null)
+    })
   })
   .unknown();
 
@@ -25,3 +31,4 @@ export const accessTokenSecret = process.env["ACCESS_TOKEN_SECRET"];
 export const accessTokenExpires = process.env["ACCESS_TOKEN_EXPIRES"];
 export const port = process.env["PORT"];
 export const env = process.env["NODE_ENV"];
+export const dbName = process.env["DB_NAME"];

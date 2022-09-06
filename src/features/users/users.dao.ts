@@ -1,75 +1,69 @@
-import { Like } from 'typeorm';
+import { BaseError } from "@/utils/errors";
+import { Like } from "typeorm";
 
-import dataSource from '@/db';
-import { User } from '@/entity/User';
-import { RegisterDTO } from '@/features/auth/auth.dto';
-import { PaginatedResponse } from '@/types/generalResponses';
-import { PromiseResult } from '@/types/genericTypes';
-import { UsersQuery } from './users.dto';
+import dataSource from "@/db";
+import { User } from "@/entity/User";
+import { RegisterDTO } from "@/features/auth/auth.dto";
+import { PaginatedResponse } from "@/types/generalResponses";
+import { PromiseResult } from "@/types/genericTypes";
+import { UsersQuery } from "./users.dto";
 
-const register = async (registerData: RegisterDTO): PromiseResult<Error, User> => {
+const register = async (registerData: RegisterDTO): PromiseResult<BaseError, User> => {
   const userRepository = dataSource.getRepository(User);
   try {
     const user = await userRepository.create(registerData);
     return userRepository.save(user);
   } catch (error) {
-    if (error instanceof Error) return error;
-    return new Error('Failed to register user');
+    return new BaseError(error.message || "Failed to register user", 500);
   }
 };
 
-const getUsers = async (usersQuery: UsersQuery): PromiseResult<Error, PaginatedResponse<User>> => {
+const getUsers = async (usersQuery: UsersQuery): PromiseResult<BaseError, PaginatedResponse<User>> => {
   const userRepository = dataSource.getRepository(User);
   try {
     const [result, total] = await userRepository.findAndCount({
       take: usersQuery.limit,
       skip: usersQuery.limit * usersQuery.page,
       where: { email: Like(`%${usersQuery.email}%`) },
-      order: { updatedAt: 'DESC' },
+      order: { updatedAt: "DESC" }
     });
     return new PaginatedResponse<User>(total, result);
   } catch (error) {
-    if (error instanceof Error) return error;
-    return new Error('Failed to get users');
+    return new BaseError(error.message || "Failed to get users", 500);
   }
 };
 
-const findUserById = async (userId: string): PromiseResult<Error, User> => {
+const findUserById = async (userId: string): PromiseResult<BaseError, User> => {
   const userRepository = dataSource.getRepository(User);
   try {
     const user = await userRepository.findOneBy({ id: userId });
-    if (!user) return new Error('user was not found');
+    if (!user) return new BaseError("User was not found", 404);
     return user;
   } catch (error) {
-    if (error instanceof Error) return error;
-    return new Error('Failed to find user');
+    return new BaseError(error.message || "Failed to find user", 500);
   }
 };
 
-const findUserByEmail = async (email: string): PromiseResult<Error, User> => {
+const findUserByEmail = async (email: string): PromiseResult<BaseError, User> => {
   const userRepository = dataSource.getRepository(User);
   try {
     const user = await userRepository.findOneBy({ email });
-    if (!user) return new Error('user was not found');
+    if (!user) return new BaseError("user was not found", 404);
     return user;
   } catch (error) {
-    if (error instanceof Error) return error;
-    return new Error('Failed to find user');
+    return new BaseError(error.message || "Failed to find user", 500);
   }
 };
 
-const deleteUser = async (userId: string): PromiseResult<Error, string> => {
+const deleteUser = async (userId: string): PromiseResult<BaseError, string> => {
   const userRepository = dataSource.getRepository(User);
   try {
     const user = await findUserById(userId);
-    if (user instanceof Error) {
-      return new Error('user was not found');
-    }
+    if (user instanceof BaseError) return user;
     await userRepository.remove(user);
-    return 'success';
+    return "success";
   } catch (error) {
-    if (error instanceof Error) return error;
-    return new Error('user was not deleted');
+    return new BaseError(error.message || "user was not deleted", 500);
   }
 };
 
@@ -78,5 +72,5 @@ export default {
   getUsers,
   findUserById,
   findUserByEmail,
-  deleteUser,
+  deleteUser
 };
