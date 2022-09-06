@@ -4,6 +4,7 @@ import { LoginDTO, RegisterDTO } from './auth.dto';
 import AuthService from './auth.service';
 import { loginSchema, registerSchema } from './auth.validations';
 
+
 const login = async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body;
   const { error } = loginSchema.validate({
