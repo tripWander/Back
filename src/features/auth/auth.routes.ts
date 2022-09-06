@@ -9,11 +9,26 @@ const authRouter = Router();
  * /auth/login:
  *   post:
  *     description: login a user!
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             example:
+ *               email: viktor@gmail.com
+ *               password: Hard1Pass2!
  *     tags:
  *       - auth
  *     responses:
  *       200:
  *         description: Returns accessToken and user id.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               example:
+ *                 accessToken: longtoken
+ *                 id: longid
  */
 authRouter.post('/login', AuthController.login);
 
