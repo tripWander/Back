@@ -1,14 +1,21 @@
+import path from 'path'
+import fs from 'fs'
 import jwt from 'jsonwebtoken';
 
-import { accessTokenExpires, accessTokenSecret } from '@/config/env';
+import { accessTokenExpires } from "@/config/env";
+import { User } from "@/entity/User";
 
-export const generateAccessToken = async (email: string, id: string) => {
+
+const pathToKey = path.join(__dirname, "..", "..", "id_rsa_priv.pem")
+const PRIV_KEY = fs.readFileSync(pathToKey, 'utf8')
+
+export const generateAccessToken = async (user: User) => {
   return jwt.sign(
     {
-      email,
-      id,
+      sub: user.id,
+      iat: Date.now()
     },
-    accessTokenSecret || 'secret',
-    { expiresIn: accessTokenExpires },
+    PRIV_KEY,
+    { expiresIn: accessTokenExpires, algorithm: "RS256" },
   );
 };

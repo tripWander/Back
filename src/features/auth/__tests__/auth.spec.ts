@@ -42,12 +42,12 @@ describe('user can register and then login', () => {
         expect(response.body.accessToken).toBeTruthy()
       })
   })
-  test("user which is registered can login", async ()=>{
+  test("user can't login with wrong password", async ()=>{
     const loginData = new LoginDTO(newUser.email,badPass )
     await  request(app)
       .post("/auth/login")
       .send(loginData)
-      .expect(400)
+      .expect(401)
       .then(response=>{
         expect(response.body.accessToken).toBeUndefined()
       })

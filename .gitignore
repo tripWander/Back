@@ -9,3 +9,6 @@ logs/
 .env
 .env.test
 .env.prduction
+
+id_rsa_pub.pem
+id_rsa_priv.pem

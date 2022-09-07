@@ -1,6 +1,8 @@
-import { Router } from 'express';
+import passport from "passport";
+import { Router } from "express";
 
-import UsersController from './users.controller';
+import UsersController from "./users.controller";
+import {passportBaseJWT} from "@/middlewares/auth.middlewares";
 
 const userRouter = Router();
 
@@ -15,7 +17,7 @@ const userRouter = Router();
  *       200:
  *         description: Returns list of users.
  */
-userRouter.get('/', UsersController.getUsers);
+userRouter.get("/", passportBaseJWT, UsersController.getUsers);
 
 /**
  * @openapi
@@ -28,7 +30,7 @@ userRouter.get('/', UsersController.getUsers);
  *       200:
  *         description: Returns user.
  */
-userRouter.get('/:userId', UsersController.getUser);
+userRouter.get("/:userId", passportBaseJWT, UsersController.getUser);
 
 /**
  * @openapi
@@ -41,6 +43,6 @@ userRouter.get('/:userId', UsersController.getUser);
  *       200:
  *         description: will delete user by id.
  */
-userRouter.delete('/:userId', UsersController.deleteUser);
+userRouter.delete("/:userId", passport.authenticate("jwt", { session: false }), UsersController.deleteUser);
 
 export default userRouter;

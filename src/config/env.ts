@@ -8,8 +8,7 @@ const envVarsSchema = joi.object()
     NODE_ENV: joi.string().valid("production", "development", "test")
       .required(),
     PORT: joi.number().positive().required(),
-    ACCESS_TOKEN_SECRET: joi.string().required(),
-    ACCESS_TOKEN_EXPIRES: joi.number().positive().required(),
+    ACCESS_TOKEN_EXPIRES: joi.string().required(),
     DB_NAME: joi.string().required(),
     USE_TYPEORM: joi.string().when("NODE_ENV", {
       is: joi.valid("test"),
@@ -27,7 +26,6 @@ if(error){
   throw Error(`Config validation error: ${error.message}`)
 }
 
-export const accessTokenSecret = process.env["ACCESS_TOKEN_SECRET"];
 export const accessTokenExpires = process.env["ACCESS_TOKEN_EXPIRES"];
 export const port = process.env["PORT"];
 export const env = process.env["NODE_ENV"];

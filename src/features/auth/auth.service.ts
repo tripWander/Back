@@ -16,7 +16,7 @@ const login = async (loginData: LoginDTO): PromiseResult<BaseError, LoginRespons
   if (user instanceof BaseError) return user;
   const isPassValid = isPasswordValid(loginData.password, user.password);
   if (!isPassValid) return new BaseError("password is not valid", 401);
-  const accessToken = await generateAccessToken(loginData.email, user.id);
+  const accessToken = await generateAccessToken(user);
   return new LoginResponseDTO(accessToken, user.id);
 };
 
