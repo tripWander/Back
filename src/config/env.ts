@@ -10,23 +10,27 @@ const envVarsSchema = joi.object()
     PORT: joi.number().positive().required(),
     ACCESS_TOKEN_EXPIRES: joi.string().required(),
     DB_NAME: joi.string().required(),
-    USE_TYPEORM: joi.string().when("NODE_ENV", {
-      is: joi.valid("test"),
-      then: joi.valid("true", 'false'),
-      otherwise: joi.valid(null)
-    })
+    POSTGRES_USER: joi.string().required(),
+    POSTGRES_PASSWORD: joi.string().required(),
+    DB_PORT: joi.number().positive().required(),
+    DB_HOST: joi.string().required()
   })
   .unknown();
 
 const {
-  error
+  error,
+  value
 } = envVarsSchema.prefs({ errors: { label: "key" } }).validate(process.env);
 
-if(error){
-  throw Error(`Config validation error: ${error.message}`)
+if (error) {
+  throw Error(`Config validation error: ${error.message}`);
 }
 
 export const accessTokenExpires = process.env["ACCESS_TOKEN_EXPIRES"];
 export const port = process.env["PORT"];
 export const env = process.env["NODE_ENV"];
+export const dbHost = process.env["DB_HOST"];
+export const dbPort = Number(process.env["DB_PORT"]);
 export const dbName = process.env["DB_NAME"];
+export const dbUsername = process.env["POSTGRES_USER"];
+export const dbPassword = process.env["POSTGRES_PASSWORD"];

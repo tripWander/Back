@@ -15,7 +15,7 @@ const options = {
   algorithms: ["RS256"]
 };
 
-const jWTStrategy = new Strategy(options, async (payload, done) => {
+const jwtStrategy = new Strategy(options, async (payload, done) => {
   try {
     const user = await dataSource.getRepository(User).findOneBy({ id: payload.sub });
     return user ? done(null, user) : done(null, false);
@@ -24,4 +24,26 @@ const jWTStrategy = new Strategy(options, async (payload, done) => {
   }
 });
 
-export default jWTStrategy;
+const jwtAdminStrategy = new Strategy(options, async (payload, done) => {
+  try {
+    const user = await dataSource.getRepository(User).findOneBy({ id: payload.sub });
+    return user ? done(null, user) : done(null, false);
+  } catch (error) {
+    return done(error, null);
+  }
+});
+
+const jwtOwnerStrategy = new Strategy(options, async (payload, done) => {
+  try {
+    const user = await dataSource.getRepository(User).findOneBy({ id: payload.sub });
+    return user ? done(null, user) : done(null, false);
+  } catch (error) {
+    return done(error, null);
+  }
+});
+
+export default (passport) => {
+  passport.use("jwt", jwtStrategy);
+  passport.use("jwtAdmin", jwtAdminStrategy);
+  passport.use("jwtOwner", jwtOwnerStrategy);
+};
