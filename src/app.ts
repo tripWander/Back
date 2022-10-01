@@ -1,6 +1,6 @@
 import jWTStrategy from "@/config/passport";
 import express from "express";
-import { toPairs } from "ramda";
+import { toPairs, forEach, pipe } from "ramda";
 import cors from "cors";
 import passport from "passport";
 import "reflect-metadata";
@@ -17,8 +17,11 @@ app.use(morganMiddleware);
 jWTStrategy(passport);
 passport.initialize();
 
-toPairs(routes).forEach(([routePath, handler]) => {
-  app.use(routePath, handler);
-});
-console.log("here is the app in here ");
+pipe(
+  toPairs,
+  forEach(([routePath, handler]: [string, any]) => {
+    app.use(routePath, handler);
+  })
+)(routes);
+
 export default app;

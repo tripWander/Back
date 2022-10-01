@@ -10,8 +10,9 @@ const getUsers = async (req: Request, res: Response): Promise<void> => {
   const convertedLimit = Number(limit);
   if (isNaN(convertedLimit) || isNaN(convertedPage)) {
     res.status(400).send('No page or limit were provided in the request');
+    return
   }
-  const usersQuery = new UsersQuery(convertedPage, convertedLimit, String(age), String(email));
+  const usersQuery = new UsersQuery(convertedPage, convertedLimit, String(age), email.toString());
   const result = await UsersService.getUsers(usersQuery);
   if (result instanceof BaseError) {
     res.status(result.statusCode).send(result.message);

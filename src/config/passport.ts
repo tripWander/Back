@@ -1,4 +1,5 @@
 import fs from "fs";
+import { PassportStatic } from "passport";
 import path from "path";
 import { ExtractJwt, Strategy } from "passport-jwt";
 
@@ -42,7 +43,7 @@ const jwtOwnerStrategy = new Strategy(options, async (payload, done) => {
   }
 });
 
-export default (passport) => {
+export default (passport: PassportStatic) => {
   passport.use("jwt", jwtStrategy);
   passport.use("jwtAdmin", jwtAdminStrategy);
   passport.use("jwtOwner", jwtOwnerStrategy);

@@ -1,6 +1,4 @@
-import path from "path";
-import * as dotenv from "dotenv";
-import { GenericContainer, StartedTestContainer } from "testcontainers";
+import { GenericContainer } from "testcontainers";
 
 import { dbName, dbPort, dbUsername } from "@/config/env";
 import dataSource from "@/db";

@@ -1,17 +1,17 @@
-import morgan from "morgan";
+import morgan, { StreamOptions } from "morgan";
 
 import { env } from "@/config/env";
 import logger from "@/config/winston";
 
-
 const stream = {
-  write: (message) => logger.http(message)
+  write: (message: any) => logger.http(message)
 };
 
-const skip = ()=>{
-  return env !== "development"
-}
+const skip = () => {
+  return env !== "development";
+};
 
-export default morgan(
+
+export default morgan("common",
   { stream, skip }
-)
+);
