@@ -1,18 +1,18 @@
-import path from 'path'
+import { GenericContainer } from "testcontainers";
+
+import { dbName, dbPort, dbUsername } from "@/config/env";
 import dataSource from "@/db";
-import * as dotenv from 'dotenv'
+
 
 beforeAll(async () => {
-  dotenv.config({path: path.resolve(__dirname, "../../.env.test")});
-  if (process.env.USE_TYPEORM==='true') {
-    await dataSource.initialize();
-  }
+  await dataSource.initialize();
 });
 
-afterAll(async () => {
-  dotenv.config();
-  if (process.env.USE_TYPEORM==='true') {
-   await dataSource.dropDatabase()
-  }
 
-});
+const setupTestPostgres = async () => {
+  return await new GenericContainer("postgres")
+    .withExposedPorts(dbPort)
+    .withEnv("POSTGRES_USER", dbUsername)
+    .withEnv("POSTGRES_DB", dbName)
+    .start();
+};

@@ -8,4 +8,4 @@ export class UsersQuery {
   }
 }
 
-export type UserResponseT = Partial<Omit<User, 'password'>>;
+export type UserResponseT = Partial<Omit<User, 'password', "updatedAt" | "createdAt">>;

@@ -1,0 +1,17 @@
+version: '3'
+services:
+
+  #SQL Database
+  postgres:
+    container_name: "testingTravelPlannerDB"
+    image: "postgres"
+    restart: "always"
+    environment:
+      POSTGRES_DB: "test_travel_planner_db"
+      POSTGRES_USER: "viktor"
+      POSTGRES_PASSWORD: "longPass"
+    ports:
+      - "5432:5432"
+
+volumes:
+  party-data:

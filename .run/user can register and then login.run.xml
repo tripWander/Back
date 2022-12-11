@@ -5,10 +5,12 @@
     <node-options value="" />
     <jest-package value="$PROJECT_DIR$/node_modules/jest" />
     <working-dir value="$PROJECT_DIR$" />
-    <envs>
+    <envs pass-parent-envs="false">
+      <env name="DB_HOST" value="localhost" />
+      <env name="DB_NAME" value="playground_test" />
+      <env name="DB_PORT" value="5431" />
       <env name="PORT" value="4000" />
-      <env name="USE_TYPEORM" value="true" />
-      <env name="DB_NAME" value="testbase.sqlite" />
+      <env name="POSTGRES_USER" value="postgres" />
     </envs>
     <scope-kind value="SUITE" />
     <test-file value="$PROJECT_DIR$/src/features/auth/__tests__/auth.spec.ts" />

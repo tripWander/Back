@@ -2,11 +2,14 @@ import fs from "fs";
 import path from "path";
 import jwt from "jsonwebtoken";
 import passport from "passport";
+import { Response, NextFunction } from "express";
+
+import { IRequest } from "@/types/request";
 
 const pathToKey = path.join(__dirname, "..", "..", "id_rsa_pub.pem");
 const PUB_KEY = fs.readFileSync(pathToKey, "utf8");
 
-function authMiddleware(req, res, next) {
+function authMiddleware(req: IRequest, res: Response, next: NextFunction) {
   const tokenParts = req.headers.authorization.split(" ");
 
   if (tokenParts[0] === "Bearer" && tokenParts[1].match(/\S+\.\S+\.\S+/) !== null) {
@@ -29,6 +32,7 @@ function authMiddleware(req, res, next) {
     });
   }
 }
-const passportBaseJWT = passport.authenticate("jwt", { session: false })
+
+const passportBaseJWT = passport.authenticate("jwt", { session: false });
 
 export { authMiddleware, passportBaseJWT };
